@@ -1,5 +1,6 @@
 import Fuse from "fuse.js";
 import axios from "axios";
+import { readFileSync } from "fs";
 import { z } from "zod";
 
 // const envSchema = z.object({
@@ -10,20 +11,16 @@ import { z } from "zod";
 // const env = envSchema.parse(import.meta.env);
 
 export interface quiz {
-  question: string;
+  qe: string;
+  qt?: string;
   answers: string[];
   threshold?: number;
   cs?: boolean;
 }
 
 export async function gather(): Promise<quiz[]> {
-  return [
-    {
-      question: "Who is the first man?",
-      answers: ["Adam", "Adan"],
-      threshold: 0.1,
-    },
-  ];
+  const x = JSON.parse(readFileSync("src/data.json", "utf-8"));
+  return x;
   const { data } = await axios.get(
     `https://api.github.com/gists/${env.VITE_GIST_ID}`,
     {
