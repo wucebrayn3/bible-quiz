@@ -41,8 +41,8 @@ export default function core(
     ...item,
     answers: Array.isArray(item.answers)
       ? item.answers
-      : item.answer
-        ? [item.answer]
+      : item.answers
+        ? [item.answers]
         : [],
   }));
 

@@ -77,7 +77,6 @@ export default function Base() {
         </h3>
       </div>
       <input
-        className="text-2xl"
         value={qAnswer}
         onChange={(e: React.ChangeEventHandler<HTMLInputElement>) => {
           setqAnswer(e.target.value);
@@ -87,10 +86,10 @@ export default function Base() {
             answer();
           }
         }}
-        className="border-black/50 border-2 border-solid rounded px-2"
+        className="border-black/50 border-2 border-solid rounded px-2 md:text-xl"
         placeholder="Answer"
       />
-      <button onClick={answer} className="bg-sky-300 my-2 rounded">
+      <button onClick={answer} className="bg-sky-300 my-2 rounded md:text-xl">
         {state}
       </button>
     </div>
