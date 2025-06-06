@@ -1,14 +1,5 @@
 import Fuse from "fuse.js";
 import axios from "axios";
-import { z } from "zod";
-
-const envSchema = z.object({
-  VITE_GIST_ID: z.string(),
-  VITE_GIST_TOKEN: z.string(),
-  VITE_GIST_FILE: z.string(),
-});
-
-const env = envSchema.parse(import.meta.env);
 
 export interface quiz {
   qe: string;
@@ -21,14 +12,8 @@ export interface quiz {
 export async function gather(): Promise<quiz[]> {
   const { data } = await axios.get(
     `https://api.github.com/gists/eb870458fadf06fdf48255005d378c2d`,
-    {
-      headers: {
-        Accept: "application/vnd.github.v3+json",
-        Authorization: `token ${env.VITE_GIST_TOKEN}`,
-      },
-    },
   );
-  return JSON.parse(data.files[env.VITE_GIST_FILE].content);
+  return JSON.parse(data.files["list.json"].content);
 }
 
 export default function core(

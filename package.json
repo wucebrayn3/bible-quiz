@@ -1,9 +1,9 @@
 {
   "name": "bible-quiz",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
-  "homepage": "ryannkim327.github.io/bible-quiz",
+  "homepage": "https://ryannkim327.github.io/bible-quiz",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -12,6 +12,11 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
+  "keywords": [
+    "Bible Quiz",
+    "FuseJS",
+    "BrainJS"
+  ],
   "dependencies": {
     "@tailwindcss/vite": "^4.1.8",
     "axios": "^1.9.0",
