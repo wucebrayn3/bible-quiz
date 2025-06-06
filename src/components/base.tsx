@@ -5,7 +5,7 @@ export default function Base() {
   const [questions, setQuestions] = useState<quiz[]>([]);
   const [pattern, setPattern] = useState<number[]>([]);
   const [n, setNumber] = useState<number>(-1);
-  const [question, setQuestion] = useState<quiz>({});
+  const [question, setQuestion] = useState<quiz>();
   const [qAnswer, setqAnswer] = useState("");
   const [state, setState] = useState("Start Now");
   const [score, setScore] = useState(0);
@@ -41,7 +41,7 @@ export default function Base() {
   }, [pattern]);
 
   const answer = () => {
-    if (n < pattern.length) {
+    if (n < pattern.length && question) {
       const verif = core(question, qAnswer, questions);
       console.log(verif);
       if (verif) {
@@ -70,16 +70,16 @@ export default function Base() {
       </h3>
       <div className="flex flex-col h-full w-full justify-center items-center box-border">
         <h3 className="text-xl md:text-3xl text-center">
-          {question.qe ?? "Would you like to start"}
+          {question?.qe ?? "Would you like to start"}
         </h3>
         <h3 className="text-md md:text-lg italic text-center">
-          {question.qt ?? "Gusto mo na mag siumula? Wag na."}
+          {question?.qt ?? "Gusto mo na mag siumula? Wag na."}
         </h3>
       </div>
       <input
         value={qAnswer}
-        onChange={(e: React.ChangeEventHandler<HTMLInputElement>) => {
-          setqAnswer(e.target.value);
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          setqAnswer(e.currentTarget.value);
         }}
         onKeyPress={(e) => {
           if (e.key === "Enter") {
