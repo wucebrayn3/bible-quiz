@@ -31,11 +31,13 @@ export default function Base() {
   }, [questions]);
 
   useEffect(() => {
-    if (pattern.length && n === -1) {
-      setNumber(0);
-      setQuestion(questions[pattern[0]]);
-      setState("Answer");
-    }
+    setTimeout(() => {
+      if (pattern.length && n === -1) {
+        setNumber(0);
+        setQuestion(questions[pattern[0]]);
+        setState("Answer");
+      }
+    }, 2500);
   }, [pattern]);
 
   const answer = () => {
@@ -58,21 +60,31 @@ export default function Base() {
         alert(score);
       }
     }
+    setqAnswer("");
   };
 
   return (
-    <div className="flex flex-col w-1/2 h-1/2 rounded shadow bg-black/25 p-2">
-      <h3 className="text-center text-xl">Question</h3>
-      <h3 className="flex h-full w-full justify-center items-center box-border">
-        {question.qe ?? "Would you like to start"}
+    <div className="flex flex-col md:w-3/4 md:h-3/4 w-full h-full rounded shadow bg-black/25 p-2">
+      <h3 className="text-center text-xl">
+        {n >= 0 ? `Question #${n + 1}` : "Bible Quiz Game"}
       </h3>
-      <h3 className="flex w-full text-sm items-center justify-center box-border">
-        {question.qt ?? "Gusto mo na mag siumula? Wag na."}
-      </h3>
+      <div className="flex flex-col h-full w-full justify-center items-center box-border">
+        <h3 className="text-xl md:text-3xl text-center">
+          {question.qe ?? "Would you like to start"}
+        </h3>
+        <h3 className="text-md md:text-lg italic text-center">
+          {question.qt ?? "Gusto mo na mag siumula? Wag na."}
+        </h3>
+      </div>
       <input
+        className="text-2xl"
+        value={qAnswer}
         onChange={(e: React.ChangeEventHandler<HTMLInputElement>) => {
-          if (e.target.value) {
-            setqAnswer(e.target.value);
+          setqAnswer(e.target.value);
+        }}
+        onKeyPress={(e) => {
+          if (e.key === "Enter") {
+            answer();
           }
         }}
         className="border-black/50 border-2 border-solid rounded px-2"

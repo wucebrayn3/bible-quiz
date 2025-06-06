@@ -19,8 +19,6 @@ export interface quiz {
 }
 
 export async function gather(): Promise<quiz[]> {
-  // const x = JSON.parse(readFileSync("src/data.json", "utf-8"));
-  // return x;
   const { data } = await axios.get(
     `https://api.github.com/gists/${env.VITE_GIST_ID}`,
     {
@@ -38,6 +36,7 @@ export default function core(
   answer: string,
   data: quiz[],
 ): boolean {
+  // Normalize the answer list
   const normalizedData = data.map((item) => ({
     ...item,
     answers: Array.isArray(item.answers)
@@ -47,13 +46,27 @@ export default function core(
         : [],
   }));
 
+  // 1. Try exact match first (respects case-sensitivity)
+  const exactMatch = normalizedData.find((item) => {
+    if (item.qe !== quest.qe) return false;
+    return item.answers.some((ans) =>
+      quest.cs ? ans === answer : ans.toLowerCase() === answer.toLowerCase(),
+    );
+  });
+
+  if (exactMatch) return true;
+
+  // 2. Fallback to fuzzy match (if answer is long enough)
+  if (answer.length < 2) return false;
+
   const fuse = new Fuse(normalizedData, {
-    keys: ["answers"], // 🔑 this is the field name in the objects
+    keys: ["answers"],
     threshold: quest.threshold ?? 0.25,
     isCaseSensitive: quest.cs ?? false,
   });
 
   const result = fuse.search(answer);
   const match = result.find((r) => r.item.qe === quest.qe);
+
   return !!match;
 }
