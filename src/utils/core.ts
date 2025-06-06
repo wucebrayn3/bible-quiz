@@ -20,7 +20,7 @@ export interface quiz {
 
 export async function gather(): Promise<quiz[]> {
   const { data } = await axios.get(
-    `https://api.github.com/gists/${env.VITE_GIST_ID}`,
+    `https://api.github.com/gists/eb870458fadf06fdf48255005d378c2d`,
     {
       headers: {
         Accept: "application/vnd.github.v3+json",
