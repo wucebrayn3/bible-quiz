@@ -16,3 +16,5 @@
 3. fuse.js: 7.1.0
 4. gh-pages: 6.3.0
 5. tailwindcss: 4.1.6
+
+
