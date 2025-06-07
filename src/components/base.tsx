@@ -7,7 +7,6 @@ export default function Base() {
   const [n, setNumber] = useState<number>(-1);
   const [question, setQuestion] = useState<quiz>();
   const [qAnswer, setqAnswer] = useState("");
-  const [state, setState] = useState("Start Now");
   const [score, setScore] = useState(0);
 
   useEffect(() => {
@@ -35,7 +34,6 @@ export default function Base() {
       if (pattern.length && n === -1) {
         setNumber(0);
         setQuestion(questions[pattern[0]]);
-        setState("Answer");
       }
     }, 2500);
   }, [pattern]);
@@ -64,7 +62,7 @@ export default function Base() {
   };
 
   return (
-    <div className="flex flex-col md:w-3/4 md:h-3/4 w-full h-full rounded shadow bg-black/25 p-2">
+    <div className="flex flex-col md:w-3/4 md:h-3/4 w-full h-full dark:text-white dark:bg-slate-700 dark:shadow-slate-500 rounded-md shadow-2xl shadow-gray-300 p-4">
       <h3 className="text-center text-xl">
         {n >= 0 ? `Question #${n + 1}` : "Bible Quiz Game"}
       </h3>
@@ -76,22 +74,28 @@ export default function Base() {
           {question?.qt ?? "Gusto mo na mag siumula? Wag na."}
         </h3>
       </div>
-      <input
-        value={qAnswer}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          setqAnswer(e.currentTarget.value);
-        }}
-        onKeyPress={(e) => {
-          if (e.key === "Enter") {
-            answer();
-          }
-        }}
-        className="border-black/50 border-2 border-solid rounded px-2 md:text-xl"
-        placeholder="Answer"
-      />
-      <button onClick={answer} className="bg-sky-300 my-2 rounded md:text-xl">
-        {state}
-      </button>
+      <div className="flex w-full border-white border-2 border-solid rounded-xl overflow-hidden">
+        <input
+          value={qAnswer}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            setqAnswer(e.currentTarget.value);
+          }}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              answer();
+            }
+          }}
+          type="text"
+          className="px-2 md:text-md py-2 outline-none box-sizing w-full"
+          placeholder="Answer"
+        />
+        <button
+          onClick={answer}
+          className="bg-slate-700 dark:text-black dark:bg-white px-2  md:text-xl"
+        >
+          {qAnswer.length > 0 ? "Answer" : "Next"}
+        </button>
+      </div>
     </div>
   );
 }
