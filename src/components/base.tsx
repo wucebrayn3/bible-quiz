@@ -52,26 +52,30 @@ export default function Base() {
         if (questions[pattern[next]]) {
           setQuestion(questions[pattern[next]]);
         } else {
-          alert(score);
+          setPattern([]);
         }
       } else {
-        alert(score);
+        setPattern([]);
       }
     }
     setqAnswer("");
   };
 
   return (
-    <div className="flex flex-col md:w-3/4 md:h-3/4 w-full h-full dark:text-white dark:bg-slate-700 dark:shadow-slate-500 rounded-md shadow-2xl shadow-gray-300 p-4">
+    <div className="flex flex-col md:w-3/4 md:h-3/4 w-full h-full dark:text-white dark:bg-slate-700 dark:bg-linear-br dark:bg-linear-300 dark:from-slate-500 dark:to-slate-700 dark:shadow-slate-500 rounded-md shadow-2xl shadow-gray-300 p-4">
       <h3 className="text-center text-xl">
         {n >= 0 ? `Question #${n + 1}` : "Bible Quiz Game"}
       </h3>
       <div className="flex flex-col h-full w-full justify-center items-center box-border">
         <h3 className="text-xl md:text-3xl text-center">
-          {question?.qe ?? "Would you like to start"}
+          {n < pattern.length
+            ? (question?.qe ?? "Would you like to start")
+            : `Your Score: ${score}`}
         </h3>
         <h3 className="text-md md:text-lg italic text-center">
-          {question?.qt ?? "Gusto mo na mag siumula? Wag na."}
+          {n < pattern.length
+            ? (question?.qt ?? "Gusto mo na mag siumula? Wag na.")
+            : ""}
         </h3>
       </div>
       <div className="flex w-full border-white border-2 border-solid rounded-xl overflow-hidden">
