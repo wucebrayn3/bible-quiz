@@ -41,7 +41,7 @@ export default function Base() {
   const answer = () => {
     if (n < pattern.length && question) {
       const verif = core(question, qAnswer, questions);
-      console.log(verif);
+
       if (verif) {
         setScore((prev) => prev + 1);
       }
@@ -51,11 +51,7 @@ export default function Base() {
 
         if (questions[pattern[next]]) {
           setQuestion(questions[pattern[next]]);
-        } else {
-          setPattern([]);
         }
-      } else {
-        setPattern([]);
       }
     }
     setqAnswer("");
