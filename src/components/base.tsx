@@ -58,7 +58,7 @@ export default function Base() {
   };
 
   return (
-    <div className="flex flex-col md:w-3/4 md:h-3/4 w-full h-full dark:text-white dark:bg-slate-700 dark:bg-linear-br dark:bg-linear-300 dark:from-slate-500 dark:to-slate-700 dark:shadow-slate-500 rounded-md shadow-2xl shadow-gray-300 p-4">
+    <div className="flex flex-col md:w-3/4 md:h-3/4 w-full h-full dark:text-white dark:bg-slate-700 dark:bg-linear-br dark:bg-linear-300 dark:from-slate-700 dark:to-slate-500 dark:shadow-slate-500 to-150% rounded-md shadow-2xl shadow-gray-300 p-4">
       <h3 className="text-center text-xl">
         {n >= 0 ? `Question #${n + 1}` : "Bible Quiz Game"}
       </h3>
