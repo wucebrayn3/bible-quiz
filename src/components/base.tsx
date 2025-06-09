@@ -9,6 +9,22 @@ export default function Base() {
   const [qAnswer, setqAnswer] = useState("");
   const [score, setScore] = useState(0);
 
+  const reset = () => {
+    console.log("Reset");
+  };
+
+  useEffect(() => {
+    const isVis = () => {
+      if (document.hidden || !window.focus) {
+        reset();
+      }
+    };
+    document.addEventListener("visibilitychange", isVis);
+    return () => {
+      document.removeEventListener("visibilitychange", isVis);
+    };
+  }, [document.hidden]);
+
   useEffect(() => {
     (async () => {
       const q = await gather();
@@ -58,11 +74,14 @@ export default function Base() {
   };
 
   return (
-    <div className="flex flex-col md:w-3/4 md:h-3/4 w-full h-full dark:text-white dark:bg-slate-700 dark:bg-linear-br dark:bg-linear-300 dark:from-slate-700 dark:to-slate-500 dark:shadow-slate-500 to-150% rounded-md shadow-2xl shadow-gray-300 p-4">
+    <div
+      onBlur={reset}
+      className="flex flex-col md:w-3/4 md:h-3/4 w-full h-full dark:text-white dark:bg-slate-700 dark:bg-linear-br dark:bg-linear-300 dark:from-slate-700 dark:to-slate-500 dark:shadow-slate-500 to-150% rounded-md shadow-2xl shadow-gray-300 p-4"
+    >
       <h3 className="text-center text-xl">
         {n >= 0 ? `Question #${n + 1}` : "Bible Quiz Game"}
       </h3>
-      <div className="flex flex-col h-full w-full justify-center items-center box-border">
+      <div className="flex flex-col p-10 md:p-0 h-full w-full justify-center items-center box-border">
         <h3 className="text-xl md:text-3xl text-center">
           {n < pattern.length
             ? (question?.qe ?? "Would you like to start")
