@@ -8,6 +8,9 @@ export default function Base() {
   const [question, setQuestion] = useState<quiz>();
   const [qAnswer, setqAnswer] = useState("");
   const [score, setScore] = useState(0);
+  const [time, setTime] = useState(60);
+  const [gameover, setGameover] = useState(false);
+  const [toggleLoad, setToggleLoad] = useState(0);
 
   const reset = () => {
     console.log("Reset");
@@ -43,7 +46,7 @@ export default function Base() {
       p.push(x);
     }
     setPattern(p);
-  }, [questions]);
+  }, [questions, toggleLoad]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -51,10 +54,39 @@ export default function Base() {
         setNumber(0);
         setQuestion(questions[pattern[0]]);
       }
-    }, 2500);
+    }, 25000);
   }, [pattern]);
 
+  // const delay = (ms: number) =>
+  //   new Promise((resolve) => setTimeout(resolve, ms * 1000));
+
+  useEffect(() => {
+    if (n < 0) return;
+
+    const interval = setInterval(() => {
+      setTime((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          setGameover(true);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [n, toggleLoad]);
+
   const answer = () => {
+    if (gameover) {
+      setPattern([]);
+      setNumber(-1);
+      setqAnswer("");
+      setScore(0);
+      setTime(60);
+      setGameover(false);
+      setToggleLoad(Math.floor(Math.random() * 1000));
+      return;
+    }
     if (n < pattern.length && question) {
       const verif = core(question, qAnswer, questions);
 
@@ -68,6 +100,8 @@ export default function Base() {
         if (questions[pattern[next]]) {
           setQuestion(questions[pattern[next]]);
         }
+      } else {
+        setGameover(true);
       }
     }
     setqAnswer("");
@@ -81,20 +115,22 @@ export default function Base() {
       <h3 className="text-center text-xl">
         {n >= 0 ? `Question #${n + 1}` : "Bible Quiz Game"}
       </h3>
+      <h3>{time}</h3>
+
       <div className="flex flex-col p-10 md:p-0 h-full w-full justify-center items-center box-border">
         <h3 className="text-xl md:text-3xl text-center">
-          {n < pattern.length
-            ? (question?.qe ?? "Would you like to start")
-            : `Your Score: ${score}`}
+          {!gameover ? (question?.qe ?? "Please Read") : `Your Score: ${score}`}
         </h3>
         <h3 className="text-md md:text-lg italic text-center">
-          {n < pattern.length
-            ? (question?.qt ?? "Gusto mo na mag siumula? Wag na.")
+          {!gameover
+            ? (question?.qt ??
+              "This was an identification Bible Game, the english translation was based on KJV and, the tagalog is based on Magandang Balita Bibliya with some modification which based on the translation from the KJV, I have personal reason why, its something related to bible also, which you may notice. If the answers are noun, please answer based on the actual characters, it is case sensitive.. By the way If ever you have some complains about the game, you may message us on facebook.com/MPOP.2016.")
             : ""}
         </h3>
       </div>
       <div className="flex w-full border-white border-2 border-solid rounded-xl overflow-hidden">
         <input
+          disabled={gameover}
           value={qAnswer}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setqAnswer(e.currentTarget.value);
@@ -110,9 +146,9 @@ export default function Base() {
         />
         <button
           onClick={answer}
-          className="bg-slate-700 dark:text-black dark:bg-white px-2  md:text-xl"
+          className="bg-slate-700 dark:text-black dark:bg-white px-2  md:text-xl w-50"
         >
-          {qAnswer.length > 0 ? "Answer" : "Next"}
+          {gameover ? "Try Again" : qAnswer.length > 0 ? "Answer" : "Next"}
         </button>
       </div>
     </div>
