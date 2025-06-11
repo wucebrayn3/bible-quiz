@@ -14,6 +14,8 @@ export default function Base() {
 
   const reset = () => {
     console.log("Reset");
+    if (time < 60) setTime((prev) => prev - 5);
+    return;
   };
 
   useEffect(() => {
@@ -61,7 +63,7 @@ export default function Base() {
   //   new Promise((resolve) => setTimeout(resolve, ms * 1000));
 
   useEffect(() => {
-    if (n < 0) return;
+    if (n < 0 || n >= pattern.length) return;
 
     const interval = setInterval(() => {
       setTime((prev) => {
@@ -84,7 +86,7 @@ export default function Base() {
       setScore(0);
       setTime(60);
       setGameover(false);
-      setToggleLoad(Math.floor(Math.random() * 1000));
+      setToggleLoad(Math.floor(Math.random() * 999999999) + 1);
       return;
     }
     if (n < pattern.length && question) {
@@ -94,6 +96,9 @@ export default function Base() {
         setScore((prev) => prev + 1);
       }
       if (n < pattern.length) {
+        if (qAnswer.length > 5 && time < 60) {
+          setTime((prev) => prev + 2);
+        }
         const next = n + 1;
         setNumber(next);
 
@@ -109,14 +114,15 @@ export default function Base() {
 
   return (
     <div
-      onBlur={reset}
+      // onBlur={reset}
       className="flex flex-col md:w-3/4 md:h-3/4 w-full h-full dark:text-white dark:bg-slate-700 dark:bg-linear-br dark:bg-linear-300 dark:from-slate-700 dark:to-slate-500 dark:shadow-slate-500 to-150% rounded-md shadow-2xl shadow-gray-300 p-4"
     >
-      <h3 className="text-center text-xl">
-        {n >= 0 ? `Question #${n + 1}` : "Bible Quiz Game"}
-      </h3>
-      <h3>{time}</h3>
-
+      <div className="flex justify-between">
+        <h3 className="text-center text-xl">
+          {n >= 0 ? `Question #${n + 1}` : "Bible Quiz Game"}
+        </h3>
+        <h3 className="text-center text-xl">Time: {time}</h3>
+      </div>
       <div className="flex flex-col p-10 md:p-0 h-full w-full justify-center items-center box-border">
         <h3 className="text-xl md:text-3xl text-center">
           {!gameover ? (question?.qe ?? "Please Read") : `Your Score: ${score}`}
@@ -124,13 +130,13 @@ export default function Base() {
         <h3 className="text-md md:text-lg italic text-center">
           {!gameover
             ? (question?.qt ??
-              "This was an identification Bible Game, the english translation was based on KJV and, the tagalog is based on Magandang Balita Bibliya with some modification which based on the translation from the KJV, I have personal reason why, its something related to bible also, which you may notice. If the answers are noun, please answer based on the actual characters, it is case sensitive.. By the way If ever you have some complains about the game, you may message us on facebook.com/MPOP.2016.")
+              "This was an identification Bible Game, the english translation was based on KJV and, the tagalog is based on Magandang Balita Bibliya with some modification which based on the translation from the KJV, I have personal reason why, its something related to bible also, which you may notice. If the answers are noun, please answer based on the actual characters, it is case sensitive. You only have 60 seconds, and may deducted based on your behaviour. Also, the system may add some time randomly as consideration for answers. Please don't cheat. By the way If ever you have some complains about the game, you may message us on facebook.com/MPOP.2016.")
             : ""}
         </h3>
       </div>
       <div className="flex w-full border-white border-2 border-solid rounded-xl overflow-hidden">
         <input
-          disabled={gameover}
+          disabled={gameover || n >= pattern.length}
           value={qAnswer}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setqAnswer(e.currentTarget.value);
@@ -146,11 +152,17 @@ export default function Base() {
         />
         <button
           onClick={answer}
-          className="bg-slate-700 dark:text-black dark:bg-white px-2  md:text-xl w-50"
+          className="bg-slate-700 text-white dark:text-black dark:bg-white px-2  md:text-xl w-50"
         >
           {gameover ? "Try Again" : qAnswer.length > 0 ? "Answer" : "Next"}
         </button>
       </div>
+      <input
+        className="w-full h-2 bg-slate-700 rounded-lg range-sm my-2"
+        readOnly={true}
+        value={(time / 60) * 100}
+        type="range"
+      />
     </div>
   );
 }
