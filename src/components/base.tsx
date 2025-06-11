@@ -79,7 +79,7 @@ export default function Base() {
   const answer = () => {
     if (gameover) {
       setPattern([]);
-      setNumber(-1);
+      setNumber(0);
       setqAnswer("");
       setScore(0);
       setTime(60);
