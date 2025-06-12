@@ -76,7 +76,7 @@ export default function Base() {
       });
     }, 1000);
     return () => clearInterval(interval);
-  }, [n, toggleLoad]);
+  }, [n, toggleLoad, pattern]);
 
   const answer = () => {
     if (gameover) {
