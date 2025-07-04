@@ -11,7 +11,7 @@ export interface quiz {
 
 export async function gather(): Promise<quiz[]> {
   const { data } = await axios.get(
-    `https://api.github.com/gists/eb870458fadf06fdf48255005d378c2d`,
+    `https://gist.github.com/wucebrayn3/53596fea88ebd2a7c131002fc004c82a`,
   );
   return JSON.parse(data.files["list.json"].content);
 }
