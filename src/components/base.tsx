@@ -2,19 +2,21 @@ import { useEffect, useState } from "react";
 import core, { gather, type quiz } from "../utils/core";
 
 export default function Base() {
+  const totalTime = 90;
+
   const [questions, setQuestions] = useState<quiz[]>([]);
   const [pattern, setPattern] = useState<number[]>([]);
   const [n, setNumber] = useState<number>(-1);
   const [question, setQuestion] = useState<quiz>();
   const [qAnswer, setqAnswer] = useState("");
   const [score, setScore] = useState(0);
-  const [time, setTime] = useState(60);
   const [gameover, setGameover] = useState(false);
   const [toggleLoad, setToggleLoad] = useState(0);
+  const [time, setTime] = useState(totalTime);
 
   const reset = () => {
     console.log("Reset");
-    if (time < 60) setTime((prev) => prev - 5);
+    if (time < totalTime) setTime((prev) => prev - 5);
     return;
   };
 
@@ -96,7 +98,7 @@ export default function Base() {
         setScore((prev) => prev + 1);
       }
       if (n < pattern.length) {
-        if (qAnswer.length > 5 && time < 60) {
+        if (qAnswer.length > 5 && time < totalTime) {
           setTime((prev) => prev + 2);
         }
         const next = n + 1;
@@ -115,7 +117,7 @@ export default function Base() {
   return (
     <div
       // onBlur={reset}
-      className="flex flex-col md:w-3/4 md:h-3/4 w-full h-full dark:text-white dark:bg-slate-700 dark:bg-linear-br dark:bg-linear-300 dark:from-slate-700 dark:to-slate-500 dark:shadow-slate-500 to-150% rounded-md shadow-2xl shadow-gray-300 p-4"
+      className="flex flex-col md:w-3/4 md:h-3/4 w-full h-full dark:text-white dark:bg-slate-700 dark:bg-linear-br dark:bg-linear-300 dark:from-slate-900 dark:to-slate-700 dark:shadow-slate-700 to-150% rounded-md shadow-2xl shadow-gray-300 p-4"
     >
       <div className="flex justify-between">
         <h3 className="text-center text-xl">
@@ -130,7 +132,7 @@ export default function Base() {
         <h3 className="text-md md:text-lg italic text-center">
           {!gameover
             ? (question?.qt ??
-              "This was an identification Bible Game, the english translation was based on KJV and, the tagalog is based on Magandang Balita Bibliya with some modification which based on the translation from the KJV, I have personal reason why, its something related to bible also, which you may notice. If the answers are noun, please answer based on the actual characters, it is case sensitive. You only have 60 seconds, and may deducted based on your behaviour. Also, the system may add some time randomly as consideration for answers. Please don't cheat. By the way If ever you have some complains about the game, you may message us on facebook.com/MPOP.2016.")
+              `This was an identification Bible Game, the english translation was based on KJV and, the tagalog is based on Magandang Balita Bibliya with some modification which based on the translation from the KJV, I have personal reason why, its something related to bible also, which you may notice. If the answers are noun, please answer based on the actual characters, it is case sensitive. You only have ${totalTime} seconds, and may deducted based on your behaviour. Also, the system may add some time randomly as consideration for answers. Please don't cheat. By the way If ever you have some complains about the game, you may message us on facebook.com/MPOP.2016.`)
             : ""}
         </h3>
       </div>
